@@ -20,3 +20,79 @@ time_signature integer NOT NULL
 );
 
 SELECT * FROM BIT_DB.Spotifydata;
+
+-- 1. Which artist(s) have the most popular tracks?
+SELECT artist_name, track_name, popularity FROM BIT_DB.Spotifydata
+    ORDER BY popularity desc
+    LIMIT 3;
+
+-- 2. Which song has the shortest duration in minutes?
+SELECT track_name AS track, 
+    ROUND((duration_ms/60000.00), 2) AS duration_min 
+    FROM BIT_DB.Spotifydata
+    ORDER BY duration_min
+    LIMIT 1;
+
+-- 3. Which artist(s) has the most songs in the Top 50 List
+SELECT artist_name,
+    COUNT(track_name) AS Track_Count
+    FROM BIT_DB.Spotifydata
+    GROUP BY artist_name
+    HAVING Track_Count >= 4;
+
+-- 4. What is the average tempo of songs with danceability of 0.75 or greater
+SELECT ROUND(AVG(tempo),2) AS Average_Tempo 
+    FROM BIT_DB.Spotifydata
+    WHERE danceability >= 0.750;
+
+-- 5. Which artist and song has the lowest energy
+SELECT artist_name AS Artist,
+    track_name AS Track,
+    popularity AS Popularity,
+    danceability AS Danceability,
+    ROUND(MIN(energy),2) AS Min_Energy
+    FROM BIT_DB.Spotifydata;
+
+-- 6. Which artist and song has the lowest popularity on a 0-10 scale but highest danceability?
+SELECT artist_name AS Artist,
+    track_name AS Track,
+    popularity/10 AS Popularity,
+    danceability AS Danceability
+    FROM BIT_DB.Spotifydata
+    ORDER BY 
+        Popularity,
+        Danceability desc;
+
+-- 7. How many songs have an instrumentalness greater than 0.0?
+SELECT COUNT(*) AS Total_Count FROM BIT_DB.Spotifydata
+    WHERE instrumentalness > 0.0;
+
+-- 8. Which of the top 25 most popular songs have a liveness greater than 0.25
+SELECT artist_name AS Artist,
+     track_name AS Track,
+     popularity AS Popularity,
+     liveness AS Liveness
+     FROM BIT_DB.Spotifydata
+     WHERE Liveness >= 0.25
+     ORDER BY Popularity Desc
+     LIMIT 25;
+ 
+-- 9. Sort the list based on Dance Energy, (danceability/energy)
+SELECT artist_name AS Artist,
+    track_name As Track,
+    danceability AS Danceability,
+    energy AS Energy,
+    ROUND((Danceability/Energy),2) AS Dance_Energy
+    FROM BIT_DB.Spotifydata
+    ORDER BY Dance_Energy desc;
+ 
+-- 10. Who are the top 10 artists based on popularity?
+SELECT DISTINCT artist_name AS Artist,
+    MAX(popularity) AS Popularity,
+    COUNT(*)
+    FROM BIT_DB.Spotifydata
+    GROUP BY Artist
+    HAVING COUNT(*) >= 1
+    ORDER BY Popularity Desc
+    LIMIT 10;
+  
