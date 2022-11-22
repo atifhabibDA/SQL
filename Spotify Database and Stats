@@ -96,3 +96,19 @@ SELECT DISTINCT artist_name AS Artist,
     ORDER BY Popularity Desc
     LIMIT 10;
   
+-- Calculate the average popularity for the artists in the Spotify data table. 
+-- Then, for every artist with an average popularity of 90 or above, show their name, their average popularity, and label them as a “Top Star”.
+
+WITH AVGPop_Table AS (
+    SELECT artist_name, 
+    AVG(popularity) AS Avg_Pop
+    FROM Spotifydata
+    GROUP BY artist_name
+)
+
+SELECT artist_name, 
+    Avg_Pop,
+    'Top Star' AS tag
+    FROM AVGPop_Table
+    WHERE Avg_Pop >= 90;
+  
