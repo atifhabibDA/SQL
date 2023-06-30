@@ -1,3 +1,5 @@
+DATA SET: http://sqlfiddle.com/#!17/7dae0/16/0
+
 SELECT count(*) FROM "netflix_people"
 
 SELECT * FROM "netflix_people" LIMIT 5
